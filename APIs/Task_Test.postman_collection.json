@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "169cb816-6c9a-4f73-a73a-c53ba3786c0b",
+		"name": "Task_Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth_login",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Crud Example (GET)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/test"
+			},
+			"response": []
+		},
+		{
+			"name": "Crud Example (post)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImNyZWF0ZWRfYXQiOiIyMDI0LTAxLTI0VDEwOjQ4OjE3LjU5M1oiLCJ1cGRhdGVkX2F0IjoiMjAyNC0wMS0yNFQxMDo0ODoxNy41OTNaIiwiaWF0IjoxNzA2MDkzMzg5fQ.g6h8UHDlxZoW2zgcKB3NrfosHexI1PlBlijfo7cBdYc"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n        \"title\": \"Title Example 2\",\n        \"text\": \"TextExample\",\n        \"subtitle1\": \"sks\",\n        \"subtitle2\": \"test\"\n      \n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/test"
+			},
+			"response": []
+		},
+		{
+			"name": "Crud Example (edit)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImNyZWF0ZWRfYXQiOiIyMDI0LTAxLTI0VDEwOjQ4OjE3LjU5M1oiLCJ1cGRhdGVkX2F0IjoiMjAyNC0wMS0yNFQxMDo0ODoxNy41OTNaIiwiaWF0IjoxNzA2MDkzMzg5fQ.g6h8UHDlxZoW2zgcKB3NrfosHexI1PlBlijfo7cBdYc"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n        \"title\": \"Title Example EDIT\",\n        \"text\": \"TextExample\",\n        \"subtitle1\": \"sks\",\n        \"subtitle2\": \"test\"\n      \n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/test/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Crud Example (delete)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImNyZWF0ZWRfYXQiOiIyMDI0LTAxLTI0VDEwOjQ4OjE3LjU5M1oiLCJ1cGRhdGVkX2F0IjoiMjAyNC0wMS0yNFQxMDo0ODoxNy41OTNaIiwiaWF0IjoxNzA2MDkzMzg5fQ.g6h8UHDlxZoW2zgcKB3NrfosHexI1PlBlijfo7cBdYc"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/test/2"
+			},
+			"response": []
+		}
+	]
+}
