@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { UsersModel } from '../models';
+import { UsersModel,AuthModel } from '../models';
 import { ErrorsUtil, CryptoUtil } from '../utils';
+import nodemailer from 'nodemailer';
+
 
 import config from '../config/variables.config';
 
@@ -46,6 +48,56 @@ export default class AuthService {
       accessToken,
       refreshToken,
       ...user
+    };
+    return payload;
+  }
+
+  static async googleLogin(userObject) {
+    const user = await AuthModel.findByEmail(userObject.email);
+    if (!user) {
+      const newUser = {
+        displayName: userObject.name,
+        email: userObject.email,
+        googleId: userObject.sub,
+        picture: userObject.picture
+      };
+      const transport = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          // company mail
+          user: 'khachatryanartur848@gmail.com',
+          pass: 'pveuruzoqugxlrbn'
+        }
+      });
+
+      const mailOptions = {
+        // company mail
+        from: 'khachatryanartur848@gmail.com',
+        to: userObject.email,
+        subject: 'Registration email',
+        text: 'Congratulations!!! You are registered in our Best Optics company!!!'
+      };
+
+      transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return error;
+        }
+        // console.log('Email sent: ' + info.response);
+        return `Email sent: ${info.response}`;
+      });
+      return await UsersModel.create(newUser);
+    }
+
+    const payload = {
+      googleId: user.googleId,
+      email: user.email,
+      displayName: user.displayName,
+      picture: user.picture
+      // role: user.role,
+      // status: user.status,
     };
     return payload;
   }

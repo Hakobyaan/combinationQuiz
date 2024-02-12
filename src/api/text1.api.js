@@ -10,6 +10,8 @@ const router = express.Router();
 
 // TEXT (example) CRUDs
 router.get('/',
+  AuthMiddleware.authenticateFor(['admin', 'SUPERADMIN', 'user']),
+
   Text1Controller.getText);
 
 router.post('/',

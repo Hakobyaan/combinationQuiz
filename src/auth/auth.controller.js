@@ -24,4 +24,18 @@ export default class AuthController {
       next(error);
     }
   }
+
+  static async googleLogin(req, res, next) {
+    console.log(2);
+
+    try {
+      const userObject = req.body;
+
+      const loginResult = await AuthService.googleLogin(userObject);
+
+      SuccessHandlerUtil.handleAdd(res, next, loginResult);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
