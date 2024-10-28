@@ -1,1 +1,1 @@
-export { default as Text1Service } from './text1.service';
+export { default as CombinationsService } from './combination.service';

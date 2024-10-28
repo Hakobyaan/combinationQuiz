@@ -3,17 +3,12 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-// import helmet from 'helmet';
-// import { Server } from 'socket.io';
 
 // Local modules
 import config from './config/variables.config';
-import PSQLStorage from './storage/psql.storage';
+import MySQLStorage from './storage/mysql.storage'; // Updated to use MySQL
 import ErrorHandlerMiddleware from './middlewares/error-handler.middleware';
 import Api from './api';
-// import MessageHandler from './socket/message-handler';
-
-// import { LoggerUtil } from './utils';
 
 const { DISABLE_REQUEST_LOG } = config;
 
@@ -22,7 +17,6 @@ class App {
    */
   constructor() {
     this.app = express();
-    // this.app.use(helmet());
     this.app.use('/upload', express.static('upload'));
   }
 
@@ -48,7 +42,6 @@ class App {
 
   /* @private
    * @description Set Cross-origin resource sharing.
-   *  Reflect any request that is coming from an origin ending with one specified in configs.
    */
   _setCors() {
     this.app.use(
@@ -64,8 +57,7 @@ class App {
   }
 
   /* @private
-   * @description Set body parser:
-   *  1. Parses the text as JSON & exposes the resulting object on req.body (limit 1 mb).
+   * @description Set body parser.
    */
   _setRequestParser() {
     this.app.use(bodyParser.json());
@@ -78,8 +70,8 @@ class App {
    * @private
    * @description Initialize storage.
    */
-  static _initializeStorage() {
-    return PSQLStorage.init();
+  static async _initializeStorage() {
+    return MySQLStorage.init(); // Updated to use MySQL
   }
 
   /* @private

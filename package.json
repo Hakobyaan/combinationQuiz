@@ -1,7 +1,7 @@
 {
-  "name": "parlament",
+  "name": "test_task",
   "version": "1.0.0",
-  "description": "Parlament",
+  "description": "Quiz",
   "scripts": {
     "start": "babel-node src/bin/www.js",
     "dev": "babel-watch src/bin/www.js",
@@ -11,7 +11,7 @@
     "lint-no-fix": "eslint src/",
     "lint": "eslint --fix src/"
   },
-  "author": "InPoint",
+  "author": "Marat Hakobyan",
   "devDependencies": {
     "@babel/register": "^7.18.9",
     "babel-cli": "^6.26.0",
@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.20.2",
     "@joi/date": "^2.1.0",
     "@meanie/mongoose-to-json": "^2.6.0",
+    "axios": "^1.6.7",
     "babel": "^6.23.0",
     "babel-watch": "^7.7.0",
     "bcryptjs": "^2.4.3",
@@ -38,6 +39,7 @@
     "eslint-config-airbnb": "^18.2.0",
     "express": "^4.17.3",
     "express-session": "^1.18.0",
+    "fetch": "^1.1.0",
     "handlebars": "^4.7.7",
     "helmet": "^6.0.0",
     "joi": "^17.6.0",
@@ -51,6 +53,7 @@
     "mongoose-id-validator": "^0.6.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
+    "mysql2": "^3.11.3",
     "nodemailer": "^6.9.9",
     "objection": "^3.0.1",
     "parse-duration": "^1.0.2",
@@ -58,6 +61,8 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.8.0",
     "postgres-migrations": "^5.3.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "regenerator-runtime": "^0.13.9",
     "socket.io": "^4.5.3",
     "socketio-auth": "^0.1.1",

@@ -1,27 +1,25 @@
-// NPM Modules
-import knex from 'knex';
-import knexConfigs from '../knex.configs';
+import pool from '../db.configs';
 
-// Local Modules
-import { LoggerUtil } from '../src/utils';
-
-function down(pg) {
-  return pg.schema
-    .dropTableIfExists('member')
-    .dropTableIfExists('text1');
-}
-
-async function init() {
+async function dropTables() {
+  let connection;
   try {
-    const options = process.env.NODE_ENV === 'production'
-      ? knexConfigs.production
-      : knexConfigs.development;
-    const pg = knex(options);
-    await down(pg);
-    console.log('Successfully dropped all tables ... ');
+    connection = await pool.getConnection();
+
+    const dropSQL = `
+      DROP TABLE IF EXISTS responses;
+      DROP TABLE IF EXISTS combinations;
+      DROP TABLE IF EXISTS items;
+    `;
+
+    await connection.query(dropSQL);
+    console.log('Successfully dropped all tables.');
   } catch (error) {
-    LoggerUtil.error(error.message);
+    console.error('Error dropping tables:', error.message);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
   }
 }
 
-init();
+dropTables();

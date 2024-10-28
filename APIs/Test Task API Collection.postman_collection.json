@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "c5ff660e-417d-48c2-bdfb-fc6e72ff1c2b",
+		"name": "Test Task API Collection",
+		"description": "Collection for testing Test Task APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37906071"
+	},
+	"item": [
+		{
+			"name": "Create Item",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\"A1\", \"B2\", \"C3\"],\n  \"length\": 2\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/generate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"generate"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Item",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\"A1\", \"B2\", \"C3\"],\n  \"length\": 2\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"generate"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"combination\": [\n        [\n            \"A1\",\n            \"B2\"\n        ],\n        [\n            \"A1\",\n            \"C3\"\n        ],\n        [\n            \"B2\",\n            \"C3\"\n        ]\n    ]\n}"
+				}
+			]
+		}
+	]
+}
