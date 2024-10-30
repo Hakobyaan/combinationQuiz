@@ -8,14 +8,13 @@ class CombinationController {
       const error = new ErrorsUtil.InputValidationError('Invalid input format', 400);
       return res.status(error.status).json({ error: error.message });
     }
-
+//debug i hamar
     try {
       const response = await CombinationsService.saveCombinations(items, length);
 
       if (!response || !response.combination || response.combination.length === 0) {
         return res.status(404).json({ error: 'No combinations found' });
       }
-
       return res.status(200).json(response);
     } catch (error) {
       console.error('Error generating combinations:', error);

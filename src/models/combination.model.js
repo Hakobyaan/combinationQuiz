@@ -1,51 +1,71 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable max-len */
-/* eslint-disable no-restricted-syntax */
 import pool from '../../db.configs';
 
 class CombinationModel {
-  static async getById(id) {
-    const [rows] = await pool.query('SELECT * FROM combinations WHERE id = ?', [id]);
-    return rows[0];
-  }
-
-  static async createCombination(combination) {
-    const [result] = await pool.query('INSERT INTO combinations (combination) VALUES (?)', [combination]);
+  static async createResponse() {
+    const [result] = await pool.query('INSERT INTO responses (created_at) VALUES (NOW())');
     return result.insertId;
   }
 
-  static async updateCombination(id, newCombination) {
-    const [result] = await pool.query(
-      'UPDATE combinations SET combination = ? WHERE id = ?',
-      [newCombination, id]
-    );
-    return result.affectedRows > 0;
-  }
-
-  static async deleteCombination(id) {
-    const [result] = await pool.query('DELETE FROM combinations WHERE id = ?', [id]);
-    return result.affectedRows > 0;
-  }
-
-  static async getAll() {
-    const [rows] = await pool.query('SELECT * FROM combinations');
-    return rows;
-  }
-
-  static async createMultiple(combinations) {
+  static async createItems(items, responseId) {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
 
-      const combinationIds = [];
-      for (const combo of combinations) {
-        const [result] = await connection
-          .query('INSERT INTO combinations (combination) VALUES (?)', [combo]);
-        combinationIds.push(result.insertId);
+      for (const item of items) {
+        await connection.query(
+          'INSERT INTO items (item_value, response_id) VALUES (?, ?)',
+          [item, responseId]
+        );
+      }
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
+  }
+
+  static async createCombinations(combinations, responseId) {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      if (!Array.isArray(combinations)) {
+        throw new Error('Invalid combinations input: Expected an array.');
       }
 
+      for (const combo of combinations) {
+        if (!Array.isArray(combo)) {
+          console.error('Invalid combo:', combo); 
+          continue; 
+        }
+
+        const [comboResult] = await connection.query(
+          'INSERT INTO combinations (combination_value, response_id) VALUES (?, ?)',
+          [combo.join(','), responseId]
+        );
+
+        const comboId = comboResult.insertId;
+
+        for (const item of combo) {
+          const [itemResult] = await connection.query(
+            'SELECT id FROM items WHERE item_value = ? AND response_id = ?',
+            [item, responseId]
+          );
+          
+          if (itemResult.length === 0) {
+            console.error(`Item ${item} not found for response ID ${responseId}`);
+            continue; 
+          }
+
+          await connection.query(
+            'INSERT INTO combination_items (combination_id, item_id) VALUES (?, ?)',
+            [comboId, itemResult[0].id]
+          );
+        }
+      }
       await connection.commit();
-      return combinationIds;
     } catch (error) {
       await connection.rollback();
       throw error;
