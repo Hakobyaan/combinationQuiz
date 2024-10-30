@@ -1,59 +1,55 @@
-import pool from '../../db.configs';
+import {CombinationModel} from '../models';
 import ErrorsUtil from '../utils/errors.util';
 
 class CombinationsService {
   static generateCombinations(items, length) {
+    console.log('Input items:', items);
+    console.log('Combination length:', length);
+  
     const combinations = [];
-
+  
     function backtrack(start, combo) {
       if (combo.length === length) {
         combinations.push([...combo]);
         return;
       }
+  
+      if (combo.length + (items.length - start) < length) return;
+  
       for (let i = start; i < items.length; i += 1) {
-        // eslint-disable-next-line no-continue
-        if (combo.some((c) => c[0] === items[i][0])) continue; // Skip if same prefix
         combo.push(items[i]);
         backtrack(i + 1, combo);
         combo.pop();
       }
     }
-
+  
     backtrack(0, []);
+  
+    console.log('Generated combinations:', combinations);
     return combinations;
   }
-
+  
+  
   static async saveCombinations(items, length) {
-    const connection = await pool.getConnection();
+    const combinations = this.generateCombinations(items, length);
+    
+    if (!Array.isArray(combinations)) {
+      console.error('Expected an array of combinations');
+      throw new ErrorsUtil.ConflictError('Failed to generate combinations');
+    }
+  
+    const responseId = await CombinationModel.createResponse();
+  
     try {
-      await connection.beginTransaction();
-
-      // Generate combinations
-      const combinations = this.generateCombinations(items, length);
-
-      // Example: Saving items in `items` table
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of items) {
-        // eslint-disable-next-line no-await-in-loop
-        await connection.query('INSERT INTO items (item_name) VALUES (?)', [item]);
-      }
-
-      // Example response construction
-      const response = {
-        id: 1, // This can be dynamically set if needed
-        combination: combinations
-      };
-
-      console.log('Generated Response:', response); // Debugging: Log the response
-      await connection.commit();
-      return response;
+      await CombinationModel.createItems(items, responseId);
+      await CombinationModel.createCombinations(combinations, responseId);
+      return { id: responseId, combination: combinations };
     } catch (error) {
-      await connection.rollback();
+      console.error("Original error in saveCombinations:", error);
       throw new ErrorsUtil.ConflictError('Failed to save combinations');
-    } finally {
-      connection.release();
     }
   }
+  
 }
 
 export default CombinationsService;
